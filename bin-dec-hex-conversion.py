@@ -86,5 +86,35 @@ assert decimal_to_hex(11259375) == 'abcdef'
 assert decimal_to_hex(2881490415) == 'abc00def'
 assert decimal_to_hex(10597059) == 'a1b2c3'
 
+def decimal_to_arbitrary(decimal_num, arb_base):
+    """returns a number in an arbitrary base (up to base 62) from a given decimal number"""
+    symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    arb_digits = []
+    while decimal_num > 0:
+        arb_digits.append(str(symbols[(decimal_num % arb_base)]))
+        decimal_num = decimal_num // arb_base
+    return "".join(arb_digits[::-1])
+
+assert decimal_to_arbitrary(389, 2) == '110000101'
+assert decimal_to_arbitrary(43981, 16) == 'abcd'
+assert decimal_to_arbitrary(32109809, 42) == 'adgzb'
+assert decimal_to_arbitrary(10123114140, 62) == 'b35yqw'
+
+def arbitrary_to_decimal(arbitrary_str, arb_base):
+    """returns a decimal number from a given in an arbitrary base (up to base 62)"""
+    symbols = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    i = 0
+    result = 0
+
+    for _ in str(arbitrary_str[::-1]):
+        result +=  symbols.index(_) * arb_base**i
+        i += 1
+    return result
+
+assert arbitrary_to_decimal('110000101', 2) == 389
+assert arbitrary_to_decimal('abcd', 16) == 43981
+assert arbitrary_to_decimal('adgzb', 42) == 32109809
+assert arbitrary_to_decimal('b35yqw', 62) == 10123114140
+
         
     
